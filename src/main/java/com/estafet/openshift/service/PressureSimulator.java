@@ -46,9 +46,8 @@ public class PressureSimulator {
 			payloadMap.put("pressure", pressure);
 			
 			try {
-				makePostJsonRequest("http://iot-reg-iot-registry.192.168.42.182.nip.io/send", gson.toJson(payloadMap));
+				makePostJsonRequest(System.getenv("registryURL") + "/send", gson.toJson(payloadMap));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			Thread.sleep(interval*1000);
