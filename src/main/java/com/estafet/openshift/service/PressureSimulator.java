@@ -18,6 +18,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 @Path(value = "/")
 public class PressureSimulator {
 	private final Logger log = Logger.getLogger(PressureSimulator.class);
@@ -33,12 +36,17 @@ public class PressureSimulator {
 	public void hello1(@QueryParam("deviceName") String deviceName, @QueryParam("iterations") int iterations,
 			@QueryParam("interval") int interval) throws InterruptedException {
 		double pressure = 0;
-		String PAYLOAD = null;
+		final Map<String, Object> payloadMap = new HashMap<>(2);
+		final Gson gson = new GsonBuilder().create();
 		for (int i = 0; i < iterations; i++) {
+			payloadMap.clear();
 			pressure = Math.random() * 50 + 1;
-			PAYLOAD = "{\"thingName\":\"" + deviceName + "\"}, {\"pressure\":\"" + pressure + "\"} ";
+			
+			payloadMap.put("thingName", deviceName);
+			payloadMap.put("pressure", pressure);
+			
 			try {
-				makePostJsonRequest("http://iot-reg-iot-registry.192.168.42.182.nip.io/send", PAYLOAD);
+				makePostJsonRequest("http://iot-reg-iot-registry.192.168.42.182.nip.io/send", gson.toJson(payloadMap));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
