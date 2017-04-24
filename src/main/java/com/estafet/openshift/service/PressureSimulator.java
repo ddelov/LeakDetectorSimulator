@@ -32,24 +32,19 @@ public class PressureSimulator {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void hello1(@QueryParam("deviceName") String deviceName, @QueryParam("iterations") int iterations,
 			@QueryParam("interval") int interval) throws InterruptedException {
-		Map<String, Object> result = new HashMap<>();
-		double random = 0;
+		double pressure = 0;
+		String PAYLOAD = null;
 		for (int i = 0; i < iterations; i++) {
-			result.clear();
-			random = Math.random() * 50 + 1;
-			result.put("thingName", deviceName);
-			result.put("pressure", random);			
-			result.put("timestamp", new Timestamp(System.currentTimeMillis()).getTime());
+			pressure = Math.random() * 50 + 1;
+			PAYLOAD = "{\"thingName\":\"" + deviceName + "\"}, {\"pressure\":\"" + pressure + "\"} ";
 			try {
-				makePostJsonRequest("http://iot-reg-iot-registry.192.168.42.182.nip.io/send", result.toString());
+				makePostJsonRequest("http://iot-reg-iot-registry.192.168.42.182.nip.io/send", PAYLOAD);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			Thread.sleep(interval*1000);
-			
 		}
-		
 	}
 
 	public static int makePostJsonRequest(String url, String jsonString) throws IOException {
