@@ -33,7 +33,7 @@ public class PressureSimulator {
 	@GET
 	@Path(value = "/setPressure")
 	@Produces(MediaType.APPLICATION_JSON)
-	public void hello1(@QueryParam("deviceName") String deviceName, @QueryParam("iterations") int iterations,
+	public void setPressure(@QueryParam("deviceName") String deviceName, @QueryParam("iterations") int iterations,
 			@QueryParam("interval") int interval) throws InterruptedException {
 		double pressure = 0;
 		final Map<String, Object> payloadMap = new HashMap<>(2);
